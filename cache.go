@@ -18,9 +18,9 @@ type List interface {
 	MoveToFront(i *Item)
 }
 
-func (l *Item) Len() int {
+func (elm *Item) Len() int {
 	length := 0
-	currElm := l
+	currElm := elm
 
 	for currElm != nil {
 		length += 1
@@ -28,6 +28,16 @@ func (l *Item) Len() int {
 	}
 
 	return length
+}
+
+func (elm *Item) Front() *Item {
+	currElm := elm
+
+	for currElm.Prev != nil {
+		currElm = currElm.Prev
+	}
+
+	return currElm
 }
 
 func main() {
