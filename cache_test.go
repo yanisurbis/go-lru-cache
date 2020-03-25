@@ -66,4 +66,28 @@ func TestList(t *testing.T) {
 		assert.Equal(t, &first, second.Front())
 		assert.Equal(t, &first, first.Front())
 	})
+
+	t.Run("back returns last element of a list", func(t *testing.T) {
+		third := Item{
+			Value: 3,
+			Next:  nil,
+			Prev:  nil,
+		}
+		second := Item{
+			Value: 2,
+			Next:  &third,
+			Prev:  nil,
+		}
+		first := Item{
+			Value: 1,
+			Next:  &second,
+			Prev:  nil,
+		}
+		third.Prev = &second
+		second.Prev = &first
+
+		assert.Equal(t, &third, third.Back())
+		assert.Equal(t, &third, second.Back())
+		assert.Equal(t, &third, first.Back())
+	})
 }

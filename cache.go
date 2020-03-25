@@ -40,6 +40,16 @@ func (elm *Item) Front() *Item {
 	return currElm
 }
 
+func (elm *Item) Back() *Item {
+	currElm := elm
+
+	for currElm.Next != nil {
+		currElm = currElm.Next
+	}
+
+	return currElm
+}
+
 func main() {
 	fmt.Println(Item{
 		Value: "Hello",
