@@ -149,27 +149,53 @@ type Cache interface {
 
 type LRUCache struct {
 	Size int
-	Elements List
-	Dict map[string]*Item
+	Queue List
+	Elements map[string]*Item
 }
 
 func (cache *LRUCache) Set(key string, value interface{}) bool {
-	return true
+	element, found := cache.Elements[key]
+	if found {
+		cache.Queue.Remove(element)
+		cache.Queue.PushFront(value)
+		return true
+	} else {
+		if cache.Queue.Len() == cache.Size {
+			// delete element
+			elmToDelete := cache.Queue.Back()
+			cache.Queue.Remove(elmToDelete)
+			for key, elm := range cache.Elements {
+				if elm == elmToDelete {
+					delete(cache.Elements, key)
+				}
+			}
+		}
+		elm := cache.Queue.PushFront(value)
+		cache.Elements[key] = elm
+		return false
+	}
 }
 
 func (cache *LRUCache) Get(key string) (interface{}, bool) {
-	return nil, true
+	element, found := cache.Elements[key]
+	if found {
+		cache.Queue.MoveToFront(element)
+		return element.Value, true
+	} else {
+		return nil, false
+	}
 }
 
 func (cache *LRUCache) Clear() {
-	return
+	cache.Queue = createList()
+	cache.Elements = make(map[string]*Item, cache.Size)
 }
 
 func createCache(size int) Cache {
 	return &LRUCache{
 		Size:     size,
-		Elements: createList(),
-		Dict:     make(map[string]*Item, size),
+		Queue:    createList(),
+		Elements: make(map[string]*Item, size),
 	}
 }
 

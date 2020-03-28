@@ -95,3 +95,27 @@ func TestList(t *testing.T) {
 		assert.Equal(t, 2, list123.Back().Value)
 	})
 }
+
+func TestCache(t *testing.T) {
+	t.Run("Cache works", func(t *testing.T) {
+		cache := createCache(2)
+		cache.Set("1", 1)
+		cache.Set("2", 2)
+		cache.Set("3", 3)
+
+		_, found1 := cache.Get("1")
+		assert.False(t, found1)
+
+		v2, found2 := cache.Get("2")
+		assert.True(t, found2)
+		assert.Equal(t, 2, v2)
+
+		v3, found3 := cache.Get("3")
+		assert.True(t, found3)
+		assert.Equal(t, 3, v3)
+
+		cache.Clear()
+		_, found4 := cache.Get("3")
+		assert.False(t, found4)
+	})
+}
