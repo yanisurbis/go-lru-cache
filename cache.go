@@ -148,13 +148,29 @@ type Cache interface {
 }
 
 type LRUCache struct {
-	size int
-	elements List
-	dict map[string]*Item
+	Size int
+	Elements List
+	Dict map[string]*Item
 }
 
-func (elm *Item) Set(key string, value interface{}) {
+func (cache *LRUCache) Set(key string, value interface{}) bool {
+	return true
+}
 
+func (cache *LRUCache) Get(key string) (interface{}, bool) {
+	return nil, true
+}
+
+func (cache *LRUCache) Clear() {
+	return
+}
+
+func createCache(size int) Cache {
+	return &LRUCache{
+		Size:     size,
+		Elements: createList(),
+		Dict:     make(map[string]*Item, size),
+	}
 }
 
 func main() {
