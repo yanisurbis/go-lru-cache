@@ -2,43 +2,43 @@ package main
 
 import "fmt"
 
-type Item struct {
+type listItem struct {
 	Value interface{}
-	Next *Item
-	Prev *Item
+	Next *listItem
+	Prev *listItem
 }
 
-type LinkedList struct {
-	Head   *Item
-	Tail   *Item
+type list struct {
+	Head   *listItem
+	Tail   *listItem
 	Length int
 }
 
 type List interface {
 	Len() int
-	Front() *Item
-	Back() *Item
-	PushFront(v interface{}) *Item
-	PushBack(v interface{}) *Item
-	Remove(i *Item)
-	MoveToFront(i *Item)
+	Front() *listItem
+	Back() *listItem
+	PushFront(v interface{}) *listItem
+	PushBack(v interface{}) *listItem
+	Remove(i *listItem)
+	MoveToFront(i *listItem)
 }
 
-func (l *LinkedList) Len() int {
+func (l *list) Len() int {
 	return l.Length
 }
 
-func (l *LinkedList) Front() *Item {
+func (l *list) Front() *listItem {
 	return l.Head
 }
 
-func (l *LinkedList) Back() *Item {
+func (l *list) Back() *listItem {
 	return l.Tail
 }
 
-func (l *LinkedList) PushFront(v interface{}) *Item {
+func (l *list) PushFront(v interface{}) *listItem {
 	if l.Length == 0 {
-		newElm := &Item{
+		newElm := &listItem{
 			Value: v,
 			Next:  nil,
 			Prev:  nil,
@@ -50,7 +50,7 @@ func (l *LinkedList) PushFront(v interface{}) *Item {
 		return newElm
 	} else {
 		head := l.Head
-		newElm := &Item{
+		newElm := &listItem{
 			Value: v,
 			Next:  head,
 			Prev:  nil,
@@ -63,9 +63,9 @@ func (l *LinkedList) PushFront(v interface{}) *Item {
 	}
 }
 
-func (l *LinkedList) PushBack(v interface{}) *Item {
+func (l *list) PushBack(v interface{}) *listItem {
 	if l.Length == 0 {
-		newElm := &Item{
+		newElm := &listItem{
 			Value: v,
 			Next:  nil,
 			Prev:  nil,
@@ -77,7 +77,7 @@ func (l *LinkedList) PushBack(v interface{}) *Item {
 		return newElm
 	} else {
 		tail := l.Tail
-		newElm := &Item{
+		newElm := &listItem{
 			Value: v,
 			Next:  nil,
 			Prev:  tail,
@@ -90,7 +90,7 @@ func (l *LinkedList) PushBack(v interface{}) *Item {
 	}
 }
 
-func (l *LinkedList) Remove(i *Item) {
+func (l *list) Remove(i *listItem) {
 	// QUESTION: how to make sure the list contains this particular item?
 	if i == nil || l.Length == 0 {
 		return
@@ -125,7 +125,7 @@ func (l *LinkedList) Remove(i *Item) {
 	}
 }
 
-func (l *LinkedList) MoveToFront(i *Item) {
+func (l *list) MoveToFront(i *listItem) {
 	if i == nil {
 		return
 	}
@@ -133,8 +133,8 @@ func (l *LinkedList) MoveToFront(i *Item) {
 	l.PushFront(i.Value)
 }
 
-func createList() List {
-	return &LinkedList{
+func NewList() List {
+	return &list{
 		Head:   nil,
 		Tail:   nil,
 		Length: 0,
@@ -147,13 +147,13 @@ type Cache interface {
 	Clear()
 }
 
-type LRUCache struct {
+type lruCache struct {
 	Size int
 	Queue List
-	Elements map[string]*Item
+	Elements map[string]*listItem
 }
 
-func (cache *LRUCache) Set(key string, value interface{}) bool {
+func (cache *lruCache) Set(key string, value interface{}) bool {
 	element, found := cache.Elements[key]
 	if found {
 		cache.Queue.Remove(element)
@@ -176,7 +176,7 @@ func (cache *LRUCache) Set(key string, value interface{}) bool {
 	}
 }
 
-func (cache *LRUCache) Get(key string) (interface{}, bool) {
+func (cache *lruCache) Get(key string) (interface{}, bool) {
 	element, found := cache.Elements[key]
 	if found {
 		cache.Queue.MoveToFront(element)
@@ -186,23 +186,23 @@ func (cache *LRUCache) Get(key string) (interface{}, bool) {
 	}
 }
 
-func (cache *LRUCache) Clear() {
-	cache.Queue = createList()
-	cache.Elements = make(map[string]*Item, cache.Size)
+func (cache *lruCache) Clear() {
+	cache.Queue = NewList()
+	cache.Elements = make(map[string]*listItem, cache.Size)
 }
 
-func createCache(size int) Cache {
-	return &LRUCache{
+func NewCache(size int) Cache {
+	return &lruCache{
 		Size:     size,
-		Queue:    createList(),
-		Elements: make(map[string]*Item, size),
+		Queue:    NewList(),
+		Elements: make(map[string]*listItem, size),
 	}
 }
 
 func main() {
-	fmt.Println(Item{
+	fmt.Println(listItem{
 		Value: "Hello",
-		Next:  &Item{
+		Next:  &listItem{
 			Value: "World",
 			Next:  nil,
 			Prev:  nil,
