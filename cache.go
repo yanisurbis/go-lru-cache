@@ -139,6 +139,12 @@ type Cache interface {
 	Clear()
 }
 
+type LRUCache struct {
+	size int
+	elements List
+	dict map[string]*Item
+}
+
 func (elm *Item) Set(key string, value interface{}) {
 
 }
