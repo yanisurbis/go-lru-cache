@@ -157,7 +157,7 @@ func (cache *lruCache) Set(key string, value interface{}) bool {
 	element, found := cache.Elements[key]
 	if found {
 		cache.Queue.Remove(element)
-		cache.Queue.PushFront(value)
+		cache.Elements[key] = cache.Queue.PushFront(value)
 		return true
 	} else {
 		if cache.Queue.Len() == cache.Size {
