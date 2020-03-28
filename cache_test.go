@@ -6,11 +6,7 @@ import (
 )
 
 func create123List() List {
-	ll := &LinkedList{
-		Head:   nil,
-		Tail:   nil,
-		Length: 0,
-	}
+	ll := createList()
 	ll.PushBack(1)
 	ll.PushBack(2)
 	ll.PushBack(3)
@@ -18,17 +14,9 @@ func create123List() List {
 	return ll
 }
 
-func createEmptyList() List {
-	return &LinkedList{
-		Head:   nil,
-		Tail:   nil,
-		Length: 0,
-	}
-}
-
 func TestList(t *testing.T) {
 	t.Run("Len() returns length", func(t *testing.T) {
-		emptyList := createEmptyList()
+		emptyList := createList()
 		list123 := create123List()
 
 		assert.Equal(t, 0, emptyList.Len())
@@ -36,7 +24,7 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("Front() returns first element of a list", func(t *testing.T) {
-		emptyList := createEmptyList()
+		emptyList := createList()
 		list123 := create123List()
 
 		assert.Nil(t, emptyList.Front())
@@ -44,7 +32,7 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("Back() returns last element of a list", func(t *testing.T) {
-		emptyList := createEmptyList()
+		emptyList := createList()
 		list123 := create123List()
 
 		assert.Nil(t, emptyList.Back())
@@ -52,7 +40,7 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("PushFront() adds an element to the beginning of the list", func(t *testing.T) {
-		emptyList := createEmptyList()
+		emptyList := createList()
 		emptyList.PushFront("xxx")
 		assert.EqualValues(t, emptyList.Front(), emptyList.Back())
 		assert.Equal(t, 1, emptyList.Len())
@@ -65,7 +53,7 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("PushBack() adds an element to the end of the list", func(t *testing.T) {
-		emptyList := createEmptyList()
+		emptyList := createList()
 		emptyList.PushBack("xxx")
 		assert.EqualValues(t, emptyList.Front(), emptyList.Back())
 		assert.Equal(t, 1, emptyList.Len())
@@ -78,7 +66,7 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("Remove() removes an element from a list", func(t *testing.T) {
-		emptyList := createEmptyList()
+		emptyList := createList()
 		emptyList.Remove(emptyList.Front())
 		assert.Equal(t, 0, emptyList.Len())
 
@@ -98,7 +86,7 @@ func TestList(t *testing.T) {
 	})
 
 	t.Run("MoveToFront() moves an element to the beginning of the list", func(t *testing.T) {
-		//emptyList := createEmptyList()
+		//emptyList := createList()
 		//emptyList.MoveToFront(emptyList.Front())
 
 		list123 := create123List()

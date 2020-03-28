@@ -133,6 +133,14 @@ func (l *LinkedList) MoveToFront(i *Item) {
 	l.PushFront(i.Value)
 }
 
+func createList() List {
+	return &LinkedList{
+		Head:   nil,
+		Tail:   nil,
+		Length: 0,
+	}
+}
+
 type Cache interface {
 	Set(key string, value interface{}) bool
 	Get(key string) (interface{}, bool)
